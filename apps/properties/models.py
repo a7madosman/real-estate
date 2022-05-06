@@ -74,10 +74,12 @@ class Property(TimeStampedUUIDModel):
         verbose_name_plural = "Properties"
 
     def save(self, *args, **kwargs):
-        self.title = str.title(self.title)
-        self.description = str.description(self.description)
-        self_ref_code = "".join(
-            random.choice(string.ascii_uppercase + string.digits , k=10)
+        if self.title:
+            self.title = str.title(self.title)
+        if self.description:
+            self.description = str.capitalize(self.description)
+        self.ref_code = "".join(
+            random.choices(string.ascii_uppercase + string.digits , k=10)
         )
         super(Property, self).save(*args, **kwargs)
 
