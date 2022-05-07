@@ -7,4 +7,3 @@ class RatingAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Rating, RatingAdmin)
-

@@ -162,9 +162,6 @@ def uploadPropertyImage(request):
 class PropertySearchAPIView(APIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = PropertyCreateSerializer
-    print('*'*50)
-    print('I AM CALLED')
-    print('#'*50)
 
     def post(self, request):
         print(request.data)
