@@ -1,14 +1,16 @@
 FROM python:3.10.4-slim-buster
+
 ENV APP_HOME=/app
 RUN mkdir $APP_HOME
 RUN mkdir $APP_HOME/staticfiles
 WORKDIR $APP_HOME
 
-LABEL maintainer="bavanzaq@gmail.com"
-LABEL description="Sevelopment image for Real Estate Project"
+LABEL maintainer='bavanzaq@gmail.com'
+LABEL decription="Development image for Real Estate Project"
 
 ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERD 1
+
+ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update \
   && apt-get install -y build-essential \
@@ -18,9 +20,11 @@ RUN apt-get update \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --upgrade pip
-COPY ./requirements.txt /app/requirements.txt
-RUN pip3 install -r requirements.txt
+RUN pip install --upgrade pip
+
+COPY ./requirements.txt /app/requirements.txt 
+
+RUN pip install -r requirements.txt
 
 COPY ./docker/local/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
@@ -30,4 +34,5 @@ COPY ./docker/local/django/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
-ENTRYPOINT ["/entrypoint"]
+
+ENTRYPOINT [ "/entrypoint"]

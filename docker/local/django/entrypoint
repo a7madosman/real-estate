@@ -1,7 +1,9 @@
-#!/bun/bash
+#!/bin/bash
 
 set -o errexit
+
 set -o pipefail
+
 set -o nounset
 
 postgres_ready() {
@@ -10,7 +12,7 @@ import sys
 import psycopg2
 try:
     psycopg2.connect(
-        db_name="${POSTGRES_DB}",
+        dbname="${POSTGRES_DB}",
         user="${POSTGRES_USER}",
         password="${POSTGRES_PASSWORD}",
         host="${PG_HOST}",
@@ -23,8 +25,9 @@ END
 }
 
 until postgres_ready; do
->&2 echo "Waiting for postgreSQL to be available... :-("
-sleep 1
+ >&2 echo "🔜🔜🔜 Waiting for PostgreSQL to become available.... 🔜🔜🔜"
+ sleep 1
 done
->&2 echo "Waiting for postgreSQL to be available... :-)"
+>&2 echo "✔️✔️✔️ PostgreSQL is ready!!!!...  ✔️✔️✔️"
+
 exec "$@"
