@@ -1,5 +1,7 @@
 from django.urls import path
-from .views import (AgentListAPIView, TopAgentAPIView, GetProfileAPIView, UpdateProfileAPIView)
+
+from .views import (AgentListAPIView, GetProfileAPIView, TopAgentAPIView,
+                    UpdateProfileAPIView)
 
 urlpatterns = [
     path("me/", GetProfileAPIView.as_view(), name="get_profile"),

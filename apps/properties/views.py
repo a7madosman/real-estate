@@ -1,8 +1,6 @@
-from codecs import lookup
 import logging
-from os import stat
-import django_filters
 
+import django_filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
@@ -12,7 +10,11 @@ from rest_framework.views import APIView
 from .exceptions import PropertyNotFound
 from .models import Property, PropertyViews
 from .paginations import PropertPagination
-from .serializers import (PropertyCreateSerializer, PropertySerializer, PropertyViewSerializer)
+from .serializers import (
+    PropertyCreateSerializer,
+    PropertySerializer,
+    PropertyViewSerializer,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +27,7 @@ class PropertyFilter(django_filters.FilterSet):
     price__lt = django_filters.NumberFilter(field_name='price', lookup_expr="lt")
 
     class Meta:
-        model  = Property
+        model = Property
         fields = ["advert_type", "property_type", "price"]
 
 
@@ -41,6 +43,7 @@ class ListAllPropertiesAPIView(generics.ListAPIView):
     filterset_class = PropertyFilter
     search_fields = ["country", "city"]
     ordering_filter = ["created_at"]
+
 
 class ListAgentsPropertiesAPIView(generics.ListAPIView):
     serializer_class = PropertySerializer
@@ -69,7 +72,6 @@ class PropertyDetailView(APIView):
     def get(self, request, slug):
         property = Property.objects.get(slug=slug)
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-
         if x_forwarded_for:
             ip = x_forwarded_for.split(',')[0]
         else:
@@ -82,6 +84,7 @@ class PropertyDetailView(APIView):
         serializer = PropertySerializer(property, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 @api_view(["PUT"])
 @permission_classes([permissions.IsAuthenticated])
 def update_property_api_view(request, slug):
@@ -89,7 +92,6 @@ def update_property_api_view(request, slug):
         property = Property.objects.get(slug=slug)
     except Property.DoesNotExist:
         raise PropertyNotFound
-    
     user = request.user
     if property.user != user:
         return Response({"error": "You can't update or edit a property that doesn't belongs to you"}, 

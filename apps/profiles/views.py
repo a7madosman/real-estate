@@ -1,4 +1,3 @@
-from re import I
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -6,7 +5,8 @@ from rest_framework.views import APIView
 from .exceptions import NotYourProfile, ProfileNotFound
 from .models import Profile
 from .render import ProfileJSONRenderer
-from .serializers  import ProfileSerializer, UpdateProfileSerializer
+from .serializers import ProfileSerializer, UpdateProfileSerializer
+
 
 # Filtering Profiles to get all agents
 class AgentListAPIView(generics.ListAPIView):
@@ -45,12 +45,10 @@ class UpdateProfileAPIView(APIView):
             Profile.objects.get(user__username=username)
         except Profile.DoesNotExist:
             raise ProfileNotFound
-        user_name = request.user.username
-        
+        user_name = request.user.username 
         if user_name != username:
             raise NotYourProfile
         data = request.data
-
         serializer = UpdateProfileSerializer(instance=request.user.profile, data=data, partial=True)
         serializer.is_valid()
         serializer.save()

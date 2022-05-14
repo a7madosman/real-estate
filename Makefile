@@ -1,4 +1,3 @@
-
 ifneq (,$(wildcard ./.env))
 include .env
 export
@@ -19,16 +18,16 @@ show-logs:
 	docker compose logs
 
 migrate:
-	docker compose exec api python3 manage.py migrate
+	docker compose exec api python manage.py migrate
 
 makemigrations:
-	docker compose exec api python3 manage.py makemigrations
+	docker compose exec api python manage.py makemigrations
 
 superuser:
-	docker compose exec api python3 manage.py createsuperuser
+	docker compose exec api python manage.py createsuperuser
 
 collectstatic:
-	docker compose exec api python3 manage.py collectstatic --no-input --clear
+	docker compose exec api python manage.py collectstatic --no-input --clear
 
 down-v:
 	docker compose down -v
